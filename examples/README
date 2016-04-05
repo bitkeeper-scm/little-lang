@@ -1,0 +1,12 @@
+This directory contains samples of L code.
+
+pod2html.l:
+Converts pod docs to html.
+Example output at http://www.mcvoy.com/lm/L/L.html
+
+photos.l:
+Generates photo galleries.
+
+weather.l:
+Polls a Davis Vantage Pro 2 weather station for data
+and uploads to the Weather Underground.

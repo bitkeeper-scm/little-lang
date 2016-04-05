@@ -1,0 +1,16 @@
+#!/bin/sh
+
+case "`uname -a`" in
+    *Darwin*)
+    	echo macosx
+	;;
+    *Linux*)
+    	echo unix
+	;;
+    *Cygwin*)
+    	echo win
+	;;
+    *MING*)
+    	echo win
+	;;
+esac
