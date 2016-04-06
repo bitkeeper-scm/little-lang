@@ -1,4 +1,4 @@
-INTRODUCTION
+# INTRODUCTION
 
 L is a little interpreted language that draws heavily from C and Perl.
 From C, L gets C syntax, simple types (int, float, string), and
@@ -24,13 +24,13 @@ L is based on interim Tcl and Tk releases
 http://core.tcl.tk/tcl/info/497b93405b3435aa and
 http://core.tcl.tk/tk/info/407bae5e576b5ef7.
 
-PREREQUISITES
+## PREREQUISITES
 
 * bison
 * flex
 * libxft2-dev
 
-COMPILING L
+## COMPILING L
 
 L can be built with or without Tk.  Without Tk, you get only an tclsh
 executable named "L".  With Tk, you get that and a version of wish
@@ -38,26 +38,26 @@ with L named "L-gui" (on OS X, an application bundle is created instead).
 The accompanying Makefile builds L and L-gui for Linux, OS X, and Windows.
 
 Because L is integrated into Tcl/Tk, the instructions for configuring
-and compiling Tcl and Tk apply. See tcl/README and tk/README if you
+and compiling Tcl and Tk apply. See `tcl/README` and `tk/README` if you
 need to tweak anything.  L adds Perl-compatible regular expressions
-(PCRE) and the --with-pcre=<path> configure option to Tcl.
+(PCRE) and the `--with-pcre=<path>` configure option to Tcl.
 
-A Windows build wants msys or cygwin.  A "make help" explains the make
+A Windows build wants msys or cygwin.  A `make help` explains the make
 targets.
 
-INSTALLING
+## INSTALLING
 
-On Linux and Windows, a "make install" will install L and L-gui in
-/usr/local/bin (can be overridden with L_INSTALL_DIR=$DIR).
+On Linux and Windows, a `make install` will install L and L-gui in
+`/usr/local/bin` (can be overridden with `L_INSTALL_DIR=$DIR`).
 
 For OS X, L is similarly installed, but the L-gui application bundle
-is copied to LGUI_OSX_INSTALL_DIR which defaults to /Applications.
+is copied to `LGUI_OSX_INSTALL_DIR` which defaults to `/Applications`.
 
-DOCUMENTATION
+## DOCUMENTATION
 
-On Linux, make install will create $(INSTALL_DIR)/doc/L/L.html but
+On Linux, make install will create `$(INSTALL_DIR)/doc/L/L.html` but
 not on macos or windows (yet, it needs L to build and the path to L
-is hard coded in tcl/doc/L/pod2html.l.  Someone should fix this :)  
+is hard coded in `tcl/doc/L/pod2html.l`.  Someone should fix this :)  
 
-See tcl/doc/l-paper for "The L Programming language" published in the
+See `tcl/doc/l-paper` for "The L Programming language" published in the
 Proceedings of the 17th Tcl/Tk Conference.
