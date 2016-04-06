@@ -154,22 +154,25 @@ help:
 
 git: ## export the nested collection as a git repo with submodules
 	rm -rf $(GIT)
-	bk clone -s. . $(GIT)/L.bk
+	for repo in `bk comps`; \
+	do	repo=`basename $$repo` ; \
+		git init -q $(GIT)/$$repo.git; \
+		(cd $(GIT)/$$repo.git && git remote add origin git@github.com:bitkeeper-scm/$$repo.git) ; \
+		bk --cd=$$repo fast-export -S | \
+			(cd $(GIT)/$$repo.git && git fast-import --quiet); \
+		(cd $(GIT)/$$repo.git && git checkout -f master) ; \
+		(cd $(GIT)/$$repo.git && git push -u origin master) ; \
+	done
 	git init -q $(GIT)/L.git
 	# Not yet, BK no likey
-	bk --cd=$(GIT)/L.bk fast-export --no-bk-keys -S | \
+	bk -P fast-export -S | \
 		(cd $(GIT)/L.git && git fast-import)
-	rm -rf $(GIT)/L.bk
+	(cd $(GIT)/L.git ; git remote add origin git@github.com:bitkeeper-scm/little-lang.git ; git checkout -f master)
 	for repo in `bk comps`; \
-	do	bk detach $$repo $(GIT)/$$repo.bk; \
-		git init -q $(GIT)/$$repo.git; \
-		bk --cd=$(GIT)/$$repo.bk fast-export --no-bk-keys | \
-			(cd $(GIT)/$$repo.git && git fast-import --quiet); \
-		rm -rf $(GIT)/$$repo.bk; \
-		(cd $(GIT)/L.git && git submodule add ../$$repo.git $$repo); \
-		# can't delete these, they are authoritative \
-		# rm -rf $(GIT)/$$repo.git; \
-    	done
+	do	repo=`basename $$repo`; \
+		(cd $(GIT)/L.git && git submodule add git@github.com:bitkeeper-scm/$$repo.git $$repo) ; \
+	done
 	cd $(GIT)/L.git && git commit -m 'Add submodule pointers'
+	cd $(GIT)/L.git && git push -u origin master
 
 .PHONY: unix macosx win
