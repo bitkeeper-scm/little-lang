@@ -6,9 +6,6 @@ L_BUILD_ROOT = ./L
 LGUI_BUILD_ROOT = ./Lgui
 LIBPCRE = pcre/lib/libpcre.a
 
-# Where we build the git repos
-GIT=BitKeeper/tmp/git
-
 # platform-specific build options
 PLATFORM = $(shell ./platform)
 EXE=
@@ -65,8 +62,7 @@ $(TCLSH):
 	cd tcl/$(S) && \
 	    $(MAKE) prefix= exec_prefix= INSTALL_ROOT=../../$(L_BUILD_ROOT) \
 		install-binaries install-libraries
-	cp $(TCLSH) $(L)
-	cp $(L) $(l)
+	mv $(TCLSH) $(L)
 
 tk/$(S)/Makefile:
 	cd tk/$(S) && \
@@ -80,8 +76,7 @@ $(WISH):
 		INSTALL_ROOT=../../$(L_BUILD_ROOT) \
 		install-binaries install-libraries; \
 	pwd
-	cp $(WISH) $(L-gui)
-	cp $(L-gui) $(l-gui)
+	mv $(WISH) $(L-gui)
 
 $(LGUI_BUILD_ROOT)/tk/Wish.app:
 	$(MAKE) $(TCLSH)
@@ -151,28 +146,5 @@ install: all ## install to $(PREFIX) (default /usr/local)
 help:
 	@grep -h -E '^[a-zA-Z_\-\ ]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "make %-20s %s\n", $$1, $$2}'
 	@echo Suggested: make -j
-
-git: ## export the nested collection as a git repo with submodules
-	rm -rf $(GIT)
-	for repo in `bk comps`; \
-	do	repo=`basename $$repo` ; \
-		git init -q $(GIT)/$$repo.git; \
-		(cd $(GIT)/$$repo.git && git remote add origin git@github.com:bitkeeper-scm/$$repo.git) ; \
-		bk --cd=$$repo fast-export -S | \
-			(cd $(GIT)/$$repo.git && git fast-import --quiet); \
-		(cd $(GIT)/$$repo.git && git checkout -f master) ; \
-		(cd $(GIT)/$$repo.git && git push -u origin master) ; \
-	done
-	git init -q $(GIT)/L.git
-	# Not yet, BK no likey
-	bk -P fast-export -S | \
-		(cd $(GIT)/L.git && git fast-import)
-	(cd $(GIT)/L.git ; git remote add origin git@github.com:bitkeeper-scm/little-lang.git ; git checkout -f master)
-	for repo in `bk comps`; \
-	do	repo=`basename $$repo`; \
-		(cd $(GIT)/L.git && git submodule add git@github.com:bitkeeper-scm/$$repo.git $$repo) ; \
-	done
-	cd $(GIT)/L.git && git commit -m 'Add submodule pointers'
-	cd $(GIT)/L.git && git push -u origin master
 
 .PHONY: unix macosx win

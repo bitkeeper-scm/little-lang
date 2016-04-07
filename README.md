@@ -50,6 +50,9 @@ targets.
 On Linux and Windows, a `make install` will install L and L-gui in
 `/usr/local/bin` (can be overridden with `L_INSTALL_DIR=$DIR`).
 
+**WARNING:** If you have Tcl/Tk version 8.6 installed in `/usr/local`,
+  running `make install` will stump on your installation.
+
 For OS X, L is similarly installed, but the L-gui application bundle
 is copied to `LGUI_OSX_INSTALL_DIR` which defaults to `/Applications`.
 
