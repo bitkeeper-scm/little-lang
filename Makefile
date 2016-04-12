@@ -2,6 +2,8 @@
 PREFIX = /usr/local
 LGUI_OSX_INSTALL_DIR = /Applications  # for the OS X application bundle
 
+MAJOR=1
+MINOR=0
 L_BUILD_ROOT = ./L
 LGUI_BUILD_ROOT = ./Lgui
 LIBPCRE = pcre/lib/libpcre.a
@@ -59,6 +61,7 @@ tcl/$(S)/Makefile:
 $(TCLSH):
 	$(MAKE) $(LIBPCRE)
 	$(MAKE) tcl/$(S)/Makefile
+	echo "proc Lver {} { return \"$(MAJOR).$(MINOR)\" }" >tcl/library/Lver.tcl
 	cd tcl/$(S) && \
 	    $(MAKE) prefix= exec_prefix= INSTALL_ROOT=../../$(L_BUILD_ROOT) \
 		install-binaries install-libraries
