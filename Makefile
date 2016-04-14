@@ -149,10 +149,10 @@ install: all ## install to $(PREFIX) (default /usr/local)
 	-test "$(PLATFORM)" = "macosx" && cp -pr $(LGUI_BUILD_ROOT)/tk/Lgui.app $(LGUI_OSX_INSTALL_DIR)
 
 help:
-	@grep -h -E '^[a-zA-Z_\-\ ]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "make %-20s %s\n", $$1, $$2}'
+	@grep -h -E '^[a-zA-Z_\ -]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "make %-20s %s\n", $$1, $$2}'
 	@echo Suggested: make -j
 
-src-tar:
+src-tar: ## make source tarball
 	@(DIR=little-lang-src-$(MAJOR).$(MINOR) ; \
 	    TAR="$$DIR".tar.gz ; \
 	    echo "Creating $$TAR ..." ; \
@@ -163,7 +163,7 @@ src-tar:
 	    echo Done ; \
 	)
 
-bin-tar: all
+bin-tar: all ## make binary tarball
 	@(DIR=little-lang-$(MAJOR).$(MINOR) ; \
 	    TAR="$$DIR".tar.gz ; \
 	    echo "Creating $$TAR ..." ; \
