@@ -8,6 +8,14 @@ L_BUILD_ROOT = ./L
 LGUI_BUILD_ROOT = ./Lgui
 LIBPCRE = pcre/lib/libpcre.a
 
+BKUSER	:= $(USER)
+HERE    := $(shell pwd)
+ROOT	:= $(HERE)
+REPO    := $(shell basename $(HERE))
+URL     := $(shell echo bk://work/$(ROOT) | sed s,/home/bk/,,)
+LOG	:= $(shell echo LOG-$(BKUSER))
+OSTYPE  := $(shell bash -c 'echo $$OSTYPE')
+
 # platform-specific build options
 PLATFORM = $(shell ./platform)
 EXE=
@@ -176,4 +184,7 @@ bin-tar: all ## make binary tarball
 	    echo Done ; \
 	)
 
-.PHONY: unix macosx win src-tar
+crankturn: crank.sh remote.sh  ## Run a clean-build + regressions in cluster
+	REPO=$(REPO) URL=$(URL) REMOTE=remote.sh LOG=$(LOG) bash crank.sh
+
+.PHONY: unix macosx win src-tar bin-tar crankturn
