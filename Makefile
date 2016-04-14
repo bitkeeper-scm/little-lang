@@ -164,7 +164,8 @@ src-tar: ## make source tarball
 	)
 
 bin-tar: all ## make binary tarball
-	@(DIR=little-lang-$(MAJOR).$(MINOR) ; \
+	@(ARCH=`./L/bin/L ./bin-version.l` ; \
+	  DIR=little-lang-$(MAJOR).$(MINOR)-$$ARCH ; \
 	    TAR="$$DIR".tar.gz ; \
 	    echo "Creating $$TAR ..." ; \
 	    rm -rf "$$DIR" ; \
