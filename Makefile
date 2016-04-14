@@ -134,10 +134,12 @@ clobber: ## really clean up, assumes BK, cleans everything
 	@$(MAKE) clean
 	rm -rf L
 
-doc: $(L_BUILD_ROOT)/bin/tclsh ## build L.html, some docs
-	$(MAKE) -C tcl/doc/L L.html
+doc: $(L_BUILD_ROOT)/bin/tclsh ## build little.html, some docs
+	$(MAKE) -C tcl/doc/L little.html
 	-test -d L/doc/L || mkdir -p L/doc/L
-	cp tcl/doc/L/L.html L/doc/L
+	cp tcl/doc/L/little.html L/doc/L
+	$(MAKE) -C tcl/doc/l-paper little.pdf
+	cp tcl/doc/l-paper/little.pdf L/doc/L
 
 install: all ## install to $(PREFIX) (default /usr/local)
 	@$(MAKE) doc
