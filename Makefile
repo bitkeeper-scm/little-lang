@@ -152,4 +152,27 @@ help:
 	@grep -h -E '^[a-zA-Z_\-\ ]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "make %-20s %s\n", $$1, $$2}'
 	@echo Suggested: make -j
 
-.PHONY: unix macosx win
+src-tar:
+	@(DIR=little-lang-src-$(MAJOR).$(MINOR) ; \
+	    TAR="$$DIR".tar.gz ; \
+	    echo "Creating $$TAR ..." ; \
+	    rm -rf "$$DIR" ; \
+	    bk export -tplain -r+ "$$DIR" ; \
+	    tar zcf "$$TAR" "$$DIR" ; \
+	    rm -rf "$$DIR" ; \
+	    echo Done ; \
+	)
+
+bin-tar: all
+	@(DIR=little-lang-$(MAJOR).$(MINOR) ; \
+	    TAR="$$DIR".tar.gz ; \
+	    echo "Creating $$TAR ..." ; \
+	    rm -rf "$$DIR" ; \
+	    mkdir "$$DIR" ; \
+	    mv L Lgui "$$DIR" ; \
+	    tar zcf "$$TAR" "$$DIR" ; \
+	    rm -rf "$$DIR" ; \
+	    echo Done ; \
+	)
+
+.PHONY: unix macosx win src-tar
