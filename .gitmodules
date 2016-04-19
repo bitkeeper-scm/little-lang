@@ -1,9 +1,9 @@
 [submodule "pcre"]
 	path = pcre
-	url = git@github.com:bitkeeper-scm/pcre.git
+	url = https://github.com/bitkeeper-scm/pcre.git
 [submodule "tcl"]
 	path = tcl
-	url = git@github.com:bitkeeper-scm/tcl.git
+	url = https://github.com/bitkeeper-scm/tcl.git
 [submodule "tk"]
 	path = tk
-	url = git@github.com:bitkeeper-scm/tk.git
+	url = https://github.com/bitkeeper-scm/tk.git
