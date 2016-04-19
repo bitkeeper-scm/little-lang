@@ -48,6 +48,15 @@ need to tweak anything.  L adds Perl-compatible regular expressions
 A Windows build wants msys or cygwin.  A `make help` explains the make
 targets.
 
+L uses git submodules to distribute Tcl, Tk, and PCRE. To compile from
+source:
+
+```
+$ git submodule init
+$ git submodule update
+$ make
+```
+
 ## INSTALLING
 
 On Linux and Windows, a `make install` will install L and L-gui in
