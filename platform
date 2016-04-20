@@ -4,6 +4,9 @@ case "`uname -a`" in
     *Darwin*)
     	echo macosx
 	;;
+    *FreeBSD*)
+    	echo unix
+	;;
     *Linux*)
     	echo unix
 	;;
