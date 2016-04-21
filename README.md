@@ -74,5 +74,5 @@ On Linux, make install will create `$(INSTALL_DIR)/doc/L/L.html` but
 not on macos or windows (yet, it needs L to build and the path to Little
 is hard coded in `tcl/doc/L/pod2html.l`.  Someone should fix this :)  
 
-See `tcl/doc/l-paper` for "The L Programming language" published in the
-Proceedings of the 17th Tcl/Tk Conference.
+See `tcl/doc/l-paper` for ["The L Programming language"](http://www.tcl.tk/community/tcl2006/papers/Larry_McVoy/l.pdf) published in the
+Proceedings of the [13th Annual Tcl/Tk Conference](http://www.tcl.tk/community/tcl2006/schedule.html).
