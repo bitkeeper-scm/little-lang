@@ -1,5 +1,6 @@
 # "make install" locations
-PREFIX = /usr/local
+PREFIX = /opt/little-lang
+BINDIR := $(PREFIX)/bin
 LGUI_OSX_INSTALL_DIR = /Applications  # for the OS X application bundle
 
 MAJOR=1
@@ -24,7 +25,7 @@ ifeq "$(PLATFORM)" "win"
 	EXE=.exe
 	TCLSH_NAME=tclsh.exe
 	WISH_NAME=wish86.exe
-	WISH=$(L_BUILD_ROOT)/bin/$(WISH_NAME)
+	WISH=$(L_BUILD_ROOT)/$(BINDIR)/$(WISH_NAME)
 	TCLSH_CONFIGURE_OPTS=--enable-shared
 	TK_CONFIGURE_OPTS=--enable-shared
 endif
@@ -32,7 +33,7 @@ ifeq "$(PLATFORM)" "macosx"
 	S := unix
 	TCLSH_NAME=tclsh
 	WISH_NAME=wish8.6
-	WISH=$(LGUI_BUILD_ROOT)/bin/$(WISH_NAME)
+	WISH=$(LGUI_BUILD_ROOT)/$(BINDIR)/$(WISH_NAME)
 	TCLSH_CONFIGURE_OPTS=--enable-64bit --disable-shared
 	TK_CONFIGURE_OPTS=--enable-64bit --enable-framework --enable-aqua
 endif
@@ -40,15 +41,13 @@ ifeq "$(PLATFORM)" "unix"
 	S := unix
 	TCLSH_NAME=tclsh
 	WISH_NAME=wish8.6
-	WISH=$(L_BUILD_ROOT)/bin/$(WISH_NAME)
+	WISH=$(L_BUILD_ROOT)/$(BINDIR)/$(WISH_NAME)
 	TCLSH_CONFIGURE_OPTS=--enable-64bit --disable-shared
 	TK_CONFIGURE_OPTS=--enable-64bit --disable-xss --enable-xft --disable-shared
 endif
-TCLSH=$(L_BUILD_ROOT)/bin/$(TCLSH_NAME)
-L=$(L_BUILD_ROOT)/bin/L$(EXE)
-l=$(L_BUILD_ROOT)/bin/l$(EXE)
-L-gui=$(L_BUILD_ROOT)/bin/L-gui$(EXE)
-l-gui=$(L_BUILD_ROOT)/bin/l-gui$(EXE)
+TCLSH=$(L_BUILD_ROOT)/$(BINDIR)/$(TCLSH_NAME)
+L=$(L_BUILD_ROOT)/$(BINDIR)/L$(EXE)
+L-gui=$(L_BUILD_ROOT)/$(BINDIR)/L-gui$(EXE)
 
 all: ## default, build for `./platform`
 	$(MAKE) $(PLATFORM)
@@ -71,7 +70,8 @@ $(TCLSH):
 	$(MAKE) tcl/$(S)/Makefile
 	echo "proc Lver {} { return \"$(MAJOR).$(MINOR)\" }" >tcl/library/Lver.tcl
 	cd tcl/$(S) && \
-	    $(MAKE) prefix= exec_prefix= INSTALL_ROOT=../../$(L_BUILD_ROOT) \
+	    $(MAKE) prefix=$(PREFIX) exec_prefix=$(PREFIX) libdir=$(PREFIX)/lib \
+		INSTALL_ROOT=../../$(L_BUILD_ROOT) \
 		install-binaries install-libraries
 	mv $(TCLSH) $(L)
 
@@ -83,7 +83,8 @@ $(WISH):
 	$(MAKE) $(TCLSH)
 	$(MAKE) tk/$(S)/Makefile
 	cd tk/$(S) && \
-	    $(MAKE) XLIBS=`pwd`/../../$(LIBPCRE) prefix= exec_prefix= \
+	    $(MAKE) XLIBS=`pwd`/../../$(LIBPCRE) \
+		prefix=$(PREFIX) exec_prefix=$(PREFIX) libdir=$(PREFIX)/lib \
 		INSTALL_ROOT=../../$(L_BUILD_ROOT) \
 		install-binaries install-libraries; \
 	pwd
@@ -142,18 +143,18 @@ clobber: ## really clean up, assumes BK, cleans everything
 	@$(MAKE) clean
 	rm -rf L
 
-doc: $(L_BUILD_ROOT)/bin/tclsh ## build little.html, some docs
+doc: $(L_BUILD_ROOT)/$(BINDIR)/tclsh ## build little.html, some docs
 	$(MAKE) -C tcl/doc/L little.html
-	-test -d L/doc/L || mkdir -p L/doc/L
-	cp tcl/doc/L/little.html L/doc/L
 	$(MAKE) -C tcl/doc/l-paper little.pdf
-	cp tcl/doc/l-paper/little.pdf L/doc/L
+	mkdir -p $(L_BUILD_ROOT)/$(PREFIX)/doc
+	cp tcl/doc/L/little.html      $(L_BUILD_ROOT)/$(PREFIX)/doc
+	cp tcl/doc/l-paper/little.pdf $(L_BUILD_ROOT)/$(PREFIX)/doc
 
-install: all ## install to $(PREFIX) (default /usr/local)
+install: all ## install to $(PREFIX) (default /opt/little-lang)
 	@$(MAKE) doc
 	@test -d $(PREFIX) || mkdir $(PREFIX)
 	@test -w $(PREFIX) || { echo cannot write $(PREFIX); exit 1; }
-	cp -pr $(L_BUILD_ROOT)/* $(PREFIX)
+	cp -pr $(L_BUILD_ROOT)/$(PREFIX)/* $(PREFIX)
 	-test "$(PLATFORM)" = "macosx" && cp -pr $(LGUI_BUILD_ROOT)/tk/Lgui.app $(LGUI_OSX_INSTALL_DIR)
 
 help:
