@@ -28,6 +28,10 @@ ifeq "$(PLATFORM)" "win"
 	WISH=$(L_BUILD_ROOT)/$(BINDIR)/$(WISH_NAME)
 	TCLSH_CONFIGURE_OPTS=--enable-shared
 	TK_CONFIGURE_OPTS=--enable-shared
+ifeq "$(shell ./msys_release)" "1.0.11"
+	CFLAGS := -D_OLDMINGW
+	export CFLAGS
+endif
 endif
 ifeq "$(PLATFORM)" "macosx"
 	S := unix
@@ -143,12 +147,12 @@ clobber: ## really clean up, assumes BK, cleans everything
 	@$(MAKE) clean
 	rm -rf L
 
-doc: $(L_BUILD_ROOT)/$(BINDIR)/tclsh ## build little.html, some docs
-	$(MAKE) -C tcl/doc/L little.html
+doc: $(L)	## build little.html, some docs
+	$(MAKE) INTERP=$(HERE)/$(L) -C tcl/doc/L little.html
 	$(MAKE) -C tcl/doc/l-paper little.pdf
 	mkdir -p $(L_BUILD_ROOT)/$(PREFIX)/doc
-	cp tcl/doc/L/little.html      $(L_BUILD_ROOT)/$(PREFIX)/doc
-	cp tcl/doc/l-paper/little.pdf $(L_BUILD_ROOT)/$(PREFIX)/doc
+	-cp tcl/doc/L/little.html      $(L_BUILD_ROOT)/$(PREFIX)/doc
+	-cp tcl/doc/l-paper/little.pdf $(L_BUILD_ROOT)/$(PREFIX)/doc
 
 install: all ## install to $(PREFIX) (default /opt/little-lang)
 	@$(MAKE) doc
