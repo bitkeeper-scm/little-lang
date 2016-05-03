@@ -31,7 +31,7 @@ http://core.tcl.tk/tk/info/407bae5e576b5ef7.
 
 * bison
 * flex
-* libxft2-dev
+* libxft2-dev	(Linux only)
 
 ## COMPILING L
 
@@ -56,23 +56,49 @@ $ git submodule init
 $ git submodule update
 $ make
 ```
+### Extra notes for compiling on Windows
+
+The build requires the MinGW project, available from:
+
+	http://mingw.org
+
+If you did not already have MinGW installed, you will need to install it.
+Installation instructions can be found here:
+
+	http://mingw.org/wiki/Getting_Started
+
+You should install the MSYS base system as well as the developer toolkit
+(they were not part of the initial basic installation at this writing).
+
+One you have MSYS installed, you can open an MSYS window by running
+msys.bat as described on the Getting Started page.
+
+In this window you will be presented with a shell (bash) prompt and you
+can type:
+
+	cd /c/...
+
+where ... is the path to where you unpacked this file.  Now you should
+be able to type:
+
+	make
 
 ## INSTALLING
 
 On Linux and Windows, a `make install` will install L and L-gui in
-`/usr/local/bin` (can be overridden with `L_INSTALL_DIR=$DIR`).
-
-**WARNING:** If you have Tcl/Tk version 8.6 installed in `/usr/local`,
-  running `make install` will stump on your installation.
+`/opt/little-lang` (can be overridden with `PREFIX=$DIR`).
 
 For OS X, Little is similarly installed, but the L-gui application bundle
 is copied to `LGUI_OSX_INSTALL_DIR` which defaults to `/Applications`.
 
 ## DOCUMENTATION
 
-On Linux, make install will create `$(INSTALL_DIR)/doc/L/L.html` but
-not on macos or windows (yet, it needs L to build and the path to Little
-is hard coded in `tcl/doc/L/pod2html.l`.  Someone should fix this :)  
+`make install` will create `$(PREFIX)/doc/L.html`
 
-See `tcl/doc/l-paper` for ["The L Programming language"](http://www.tcl.tk/community/tcl2006/papers/Larry_McVoy/l.pdf) published in the
-Proceedings of the [13th Annual Tcl/Tk Conference](http://www.tcl.tk/community/tcl2006/schedule.html).
+If the build machine has `groff` and a postscript to PDF converter
+installed then you also get `$(PREFIX)/doc/little.pdf`.
+
+Alternatively, see `tcl/doc/l-paper` for ["The L Programming
+language"](http://www.tcl.tk/community/tcl2006/papers/Larry_McVoy/l.pdf)
+published in the Proceedings of the [13th Annual Tcl/Tk
+Conference](http://www.tcl.tk/community/tcl2006/schedule.html).

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+REL=$(uname -r)
+REL=${REL%%(*)}
+
+echo $REL
