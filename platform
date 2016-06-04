@@ -10,6 +10,9 @@ case "`uname -a`" in
     *Linux*)
     	echo unix
 	;;
+    *NetBSD*)
+    	echo unix
+	;;
     *Cygwin*)
     	echo win
 	;;
