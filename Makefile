@@ -156,10 +156,10 @@ doc: $(L)	## build little.html, some docs
 
 install: all ## install to $(PREFIX) (default /opt/little-lang)
 	@$(MAKE) doc
-	@test -d $(PREFIX) || mkdir $(PREFIX)
-	@test -w $(PREFIX) || { echo cannot write $(PREFIX); exit 1; }
-	cp -pr $(L_BUILD_ROOT)/$(PREFIX)/* $(PREFIX)
-	-test "$(PLATFORM)" = "macosx" && cp -pr $(LGUI_BUILD_ROOT)/tk/Lgui.app $(LGUI_OSX_INSTALL_DIR)
+	@test -d $(DESTDIR)$(PREFIX) || mkdir -p $(DESTDIR)$(PREFIX)
+	@test -w $(DESTDIR)$(PREFIX) || { echo cannot write $(PREFIX); exit 1; }
+	cp -pr $(L_BUILD_ROOT)/$(PREFIX)/* $(DESTDIR)$(PREFIX)
+	if test "$(PLATFORM)" = "macosx"; then cp -pr $(LGUI_BUILD_ROOT)/tk/Lgui.app $(LGUI_OSX_INSTALL_DIR); fi
 
 help:
 	@grep -h -E '^[a-zA-Z_\ -]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "make %-20s %s\n", $$1, $$2}'
